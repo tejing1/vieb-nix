@@ -16,6 +16,7 @@ An example for a nixos configuration flake:
 {
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
   inputs.vieb-nix.url = "github:tejing1/vieb-nix";
+  inputs.vieb-nix.inputs.nixpkgs.follows = "nixpkgs";
   outputs = { nixpkgs, vieb-nix, ...}: {
     hostname = nixpkgs.lib.nixosSystem {
       system = "x86-64-linux";
