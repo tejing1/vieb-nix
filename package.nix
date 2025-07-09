@@ -66,11 +66,11 @@ buildNpmPackage (finalAttrs: {
 
   distPhase = ":"; # disable useless $out/tarballs directory
 
-  meta = with lib; {
+  meta = {
     homepage = "https://vieb.dev/";
     changelog = "https://github.com/Jelmerro/Vieb/releases/tag/${finalAttrs.version}";
     description = "Vim Inspired Electron Browser";
-    platforms = platforms.unix;
-    license = licenses.gpl3Plus;
+    platforms = lib.platforms.unix;
+    license = lib.licenses.gpl3Plus;
   };
 })
