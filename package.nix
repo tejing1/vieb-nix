@@ -6,6 +6,7 @@
   makeWrapper,
   python3,
   makeDesktopItem,
+  copyDesktopItems,
   lib,
 }:
 
@@ -29,26 +30,29 @@ buildNpmPackage rec {
   dontNpmBuild = true;
   env.ELECTRON_SKIP_BINARY_DOWNLOAD = 1;
 
-  nativeBuildInputs = [ makeWrapper ] ++ lib.optional stdenv.isAarch64 python3;
+  nativeBuildInputs = [
+    makeWrapper
+    copyDesktopItems
+  ] ++ lib.optional stdenv.isAarch64 python3;
 
-  desktopItem = makeDesktopItem {
-    name = "vieb";
-    exec = "vieb %U";
-    icon = "vieb";
-    desktopName = "Web Browser";
-    genericName = "Web Browser";
-    categories = [ "Network" "WebBrowser" ];
-    mimeTypes = [
-      "text/html"
-      "application/xhtml+xml"
-      "x-scheme-handler/http"
-      "x-scheme-handler/https"
-    ];
-  };
+  desktopItems = [
+    (makeDesktopItem {
+      name = "vieb";
+      exec = "vieb %U";
+      icon = "vieb";
+      desktopName = "Web Browser";
+      genericName = "Web Browser";
+      categories = [ "Network" "WebBrowser" ];
+      mimeTypes = [
+        "text/html"
+        "application/xhtml+xml"
+        "x-scheme-handler/http"
+        "x-scheme-handler/https"
+      ];
+    })
+  ];
 
   postInstall = ''
-    install -Dm0644 {${desktopItem},$out}/share/applications/vieb.desktop
-
     pushd $out/lib/node_modules/vieb/app/img/icons
     for file in *.png; do
       install -Dm0644 $file $out/share/icons/hicolor/''${file//.png}/apps/vieb.png
