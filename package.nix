@@ -10,14 +10,14 @@
   lib,
 }:
 
-buildNpmPackage rec {
+buildNpmPackage (finalAttrs: {
   pname = "vieb";
   version = "12.3.0";
 
   src = fetchFromGitHub {
     owner = "Jelmerro";
-    repo = pname;
-    rev = version;
+    repo = "vieb";
+    rev = finalAttrs.version;
     hash = "sha256-g3L+bzsDP3vfTaroqCWzRDymFTZE+6nLytRWzPMBoX8=";
   };
 
@@ -61,16 +61,16 @@ buildNpmPackage rec {
 
     makeWrapper ${electron}/bin/electron $out/bin/vieb \
       --add-flags $out/lib/node_modules/vieb/app \
-      --set npm_package_version ${version}
+      --set npm_package_version ${finalAttrs.version}
   '';
 
   distPhase = ":"; # disable useless $out/tarballs directory
 
   meta = with lib; {
     homepage = "https://vieb.dev/";
-    changelog = "https://github.com/Jelmerro/Vieb/releases/tag/${version}";
+    changelog = "https://github.com/Jelmerro/Vieb/releases/tag/${finalAttrs.version}";
     description = "Vim Inspired Electron Browser";
     platforms = platforms.unix;
     license = licenses.gpl3Plus;
   };
-}
+})
