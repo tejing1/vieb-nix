@@ -72,5 +72,6 @@ buildNpmPackage (finalAttrs: {
     description = "Vim Inspired Electron Browser";
     platforms = lib.platforms.unix;
     license = lib.licenses.gpl3Plus;
+    mainProgram = "vieb";
   };
 })
